@@ -1,0 +1,5 @@
+.idea/
+packages/
+Launchpad/bin
+Launchpad/obj
+*.user
