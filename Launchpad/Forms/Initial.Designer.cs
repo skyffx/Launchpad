@@ -30,8 +30,8 @@ namespace Launchpad.Forms
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            this.BackgroundImage = ImageUtil.ResizeImageAndKeepRatio((Image) _resources.GetObject("$this.appLogo"), 128, 128);
-            this.ClientSize = new System.Drawing.Size(128, 128);
+            this.BackgroundImage = ImageUtil.ResizeImageAndKeepRatio((Image) _resources.GetObject("$this.appLogo"), 200, 200);
+            this.ClientSize = new System.Drawing.Size(200, 200);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Icon = ((Icon) (_resources.GetObject("$this.appIcon")));

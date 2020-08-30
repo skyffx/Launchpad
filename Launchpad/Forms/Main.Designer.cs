@@ -91,7 +91,7 @@ namespace Launchpad.Forms
 	        this.missionNameLabel.AutoEllipsis = true;
 	        this.missionNameLabel.Font = new Font("Segoe UI", 12F);
 	        this.missionNameLabel.Location = new Point(12, 315);
-	        this.missionNameLabel.Size = new Size(326, 20);
+	        this.missionNameLabel.Size = new Size(326, 22);
 	        this.missionNameLabel.TextAlign = ContentAlignment.TopCenter;
 	        //
 	        // missionDetailsLabel
@@ -100,8 +100,8 @@ namespace Launchpad.Forms
 		        ((AnchorStyles) ((((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left) | AnchorStyles.Right)));
 	        this.missionDetailsLabel.AutoEllipsis = true;
 	        this.missionDetailsLabel.Font = new Font("Segoe UI", 9F);
-	        this.missionDetailsLabel.Location = new Point(12, 345);
-	        this.missionDetailsLabel.Size = new Size(326, 115);
+	        this.missionDetailsLabel.Location = new Point(12, 344);
+	        this.missionDetailsLabel.Size = new Size(326, 120);
 	        this.missionDetailsLabel.TextAlign = ContentAlignment.TopCenter;
 	        this.missionDetailsLabel.Click += new EventHandler(this.missionDetailsLabel_Click);
 	        //
@@ -110,8 +110,8 @@ namespace Launchpad.Forms
 	        this.vehicleStatusLabel.Anchor =
 		        ((AnchorStyles) ((((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left) | AnchorStyles.Right)));
 	        this.vehicleStatusLabel.AutoEllipsis = true;
-	        this.vehicleStatusLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-	        this.vehicleStatusLabel.Location = new Point(12, 470);
+	        this.vehicleStatusLabel.Font = new Font("Verdana", 8F, FontStyle.Bold);
+	        this.vehicleStatusLabel.Location = new Point(12, 475);
 	        this.vehicleStatusLabel.Size = new Size(326, 14);
 	        this.vehicleStatusLabel.TextAlign = ContentAlignment.TopCenter;
 	        //
@@ -131,7 +131,7 @@ namespace Launchpad.Forms
 	        this.missionStatusLabel.Anchor =
 		        ((AnchorStyles) ((((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left) | AnchorStyles.Right)));
 	        this.missionStatusLabel.AutoEllipsis = true;
-	        this.missionStatusLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+	        this.missionStatusLabel.Font = new Font("Verdana", 8F, FontStyle.Bold);
 	        this.missionStatusLabel.Location = new Point(12, 517);
 	        this.missionStatusLabel.Size = new Size(326, 14);
 	        this.missionStatusLabel.TextAlign = ContentAlignment.TopCenter;
