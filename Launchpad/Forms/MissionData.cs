@@ -44,6 +44,15 @@ namespace Launchpad.Forms
                 case "Falcon 9" when _missionData.Rocket.SecondStage.Payloads[0].PayloadType.Contains("Dragon 1."):
                     ShowRocketImage("$this.falcon9DragonImage");
                     break;
+                case "Falcon 9" when _missionData.Rocket.SecondStage.Payloads[0].PayloadType.Contains("Dragon 2."):
+                    ShowRocketImage("$this.falcon9DragonImage");
+                    break;
+                case "Falcon 9" when _missionData.Rocket.SecondStage.Payloads[0].PayloadType.Contains("Dragon 3."):
+                    ShowRocketImage("$this.falcon9DragonImage");
+                    break;
+                case "Falcon 9" when _missionData.Rocket.SecondStage.Payloads[0].PayloadType.Contains("Dragon 4."):
+                    ShowRocketImage("$this.falcon9DragonImage");
+                    break;
             }
 
             //

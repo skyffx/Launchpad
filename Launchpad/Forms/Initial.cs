@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,29 +15,17 @@ namespace Launchpad.Forms
         {
             await Task.Run(() =>
             {
-                var response = HttpUtil.Get("https://api.spacexdata.com/v3/").Result;
-                if (response.StatusCode == HttpStatusCode.OK)
+                try
                 {
-                    try
-                    {
-                        var missionsData = new OddityCore().Launches.GetAll().Execute();
-                        var appFormThread = new Thread(() => new Main(missionsData).ShowDialog());
-                        appFormThread.SetApartmentState(ApartmentState.STA);
-                        appFormThread.Start();
-                        Application.Exit();
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("SpaceX, we have a problem!\n\nhttps://api.spacexdata.com/v3/launches\n" +
-                                        "=> Request is not completed!\n\nPlease to run app again.",
-                            $"—{Application.ProductName}—", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Application.Exit();
-                    }
+                    var missionsData = new OddityCore().Launches.GetAll().Execute();
+                    var appFormThread = new Thread(() => new Main(missionsData).ShowDialog());
+                    appFormThread.SetApartmentState(ApartmentState.STA);
+                    appFormThread.Start();
+                    Application.Exit();
                 }
-                else
+                catch (Exception exception)
                 {
-                    MessageBox.Show($"SpaceX, we have a problem!\nHttpStatusCode: {response.StatusCode.ToString()}",
-                        $"—{Application.ProductName}—", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(exception.Message, $"—{Application.ProductName}—", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Application.Exit();
                 }
             });
