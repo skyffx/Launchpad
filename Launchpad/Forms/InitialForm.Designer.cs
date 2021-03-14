@@ -2,14 +2,14 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Launchpad.Util;
+using Launchpad.Utils;
 
 namespace Launchpad.Forms
 {
-    partial class Initial
+    partial class InitialForm
     {
         private readonly ComponentResourceManager _resources =
-            new ComponentResourceManager(typeof(Main));
+            new ComponentResourceManager(typeof(MainForm));
         
         // Required designer variable.
         private IContainer components = null;

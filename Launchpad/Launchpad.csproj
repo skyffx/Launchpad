@@ -42,6 +42,14 @@
           <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Oddity, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Oddity.2.0.4\lib\netstandard1.1\Oddity.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75">
+          <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System" />
         <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
           <HintPath>..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
@@ -159,6 +167,7 @@
           <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="System.Web" />
         <Reference Include="System.Xml.Linq" />
         <Reference Include="System.Data.DataSetExtensions" />
         <Reference Include="Microsoft.CSharp" />
@@ -173,19 +182,19 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Forms\Initial.cs" />
-        <Compile Include="Forms\Initial.Designer.cs" />
-        <Compile Include="Forms\Main.cs" />
-        <Compile Include="Forms\Main.Designer.cs" />
-        <Compile Include="Forms\MissionData.cs" />
-        <Compile Include="Forms\MissionData.Designer.cs" />
-        <Compile Include="Forms\MissionPatch.cs" />
-        <Compile Include="Forms\MissionPatch.Designer.cs" />
+        <Compile Include="Forms\InitialForm.cs" />
+        <Compile Include="Forms\InitialForm.Designer.cs" />
+        <Compile Include="Forms\MainForm.cs" />
+        <Compile Include="Forms\MainForm.Designer.cs" />
+        <Compile Include="Forms\MissionDataForm.cs" />
+        <Compile Include="Forms\MissionDataForm.Designer.cs" />
+        <Compile Include="Forms\MissionPatchForm.cs" />
+        <Compile Include="Forms\MissionPatchForm.Designer.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Util\HttpUtil.cs" />
-        <Compile Include="Util\ImageUtil.cs" />
-        <EmbeddedResource Include="Forms\Main.resx" />
+        <Compile Include="Utils\HttpUtil.cs" />
+        <Compile Include="Utils\ImageUtil.cs" />
+        <EmbeddedResource Include="Forms\MainForm.resx" />
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>

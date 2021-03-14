@@ -1,11 +1,10 @@
 ﻿using System.Drawing;
 using System.IO;
 using System.Net.Http;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Launchpad.Util
+namespace Launchpad.Utils
 {
     public static class HttpUtil
     {

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace Launchpad.Util
+namespace Launchpad.Utils
 {
     public static class ImageUtil
     {

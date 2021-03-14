@@ -5,10 +5,10 @@ using System.Windows.Forms;
 
 namespace Launchpad.Forms
 {
-    partial class MissionPatch
+    partial class MissionPatchForm
     {
         private readonly ComponentResourceManager _resources =
-            new ComponentResourceManager(typeof(Main));
+            new ComponentResourceManager(typeof(MainForm));
         
         // Required designer variable.
         private IContainer components = null;
@@ -50,7 +50,7 @@ namespace Launchpad.Forms
             this.saveMissionPatchImageButton.UseVisualStyleBackColor = true;
             this.saveMissionPatchImageButton.Click += new EventHandler(this.saveMissionPatchImageButton_Click);
             //
-            // MissionPatch
+            // MissionPatchForm
             //
             this.components = new Container();
             this.AutoScaleMode = AutoScaleMode.Font;
@@ -65,7 +65,6 @@ namespace Launchpad.Forms
             this.ShowInTaskbar = false;
             this.ResumeLayout(false);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Select();
         }
 
         #endregion

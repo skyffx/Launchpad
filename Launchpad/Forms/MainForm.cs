@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Launchpad.Util;
-using Oddity;
-using Oddity.API.Models.Launch;
+using Launchpad.Utils;
+using Newtonsoft.Json.Linq;
+using Oddity.Models.Launches;
+using Oddity.Models.Launchpads;
+using Oddity.Models.Rockets;
+using RestSharp;
 
 namespace Launchpad.Forms
 {
-    public partial class Main : Form
+    public partial class MainForm : Form
     {
-        private readonly OddityCore _oddity = new OddityCore();
-        private readonly int _currentFlightNumber;
+        public const string ApiUrl = "https://api.spacexdata.com/v4";
+        private readonly List<LaunchInfo> _launchesData;
+        private readonly int _nextFlightNumber;
         private string _missionPatchLink;
-        private readonly List<LaunchInfo> _missionsData;
         private int _indexOfMission;
         private string _missionName;
-
-        //
+        private RocketInfo _rocketInfo;
+        private LaunchpadInfo _launchpadInfo;
 
         private void EnableControls(bool state)
         {
@@ -29,44 +32,33 @@ namespace Launchpad.Forms
             missionNameLabel.Focus();
         }
 
-        private static void ShowMissionDetails(string content)
-        {
-            MessageBox.Show(content, $"—{Application.ProductName}—", MessageBoxButtons.OK);
-        }
-
-        private int GetCurrentMissionFlightNumber()
-        {
-            return Convert.ToInt32(_oddity.Launches.GetNext().Execute().FlightNumber);
-        }
-        
         private void MissionData(int missionNumber)
         {
             EnableControls(false);
 
-            _missionPatchLink = _missionsData[missionNumber].Links.MissionPatch;
-            var missionPatchImage = _missionsData[missionNumber].Links.MissionPatchSmall;
-            _missionName = _missionsData[missionNumber].MissionName;
-            var missionDetails = _missionsData[missionNumber].Details;
-            var vehiclesStatus = _missionsData[missionNumber].Upcoming;
-            var launchStatus = _missionsData[missionNumber].LaunchSuccess;
+            _missionPatchLink = _launchesData[missionNumber].Links.Patch.Large;
+            var missionPatchImageLink = _launchesData[missionNumber].Links.Patch.Small;
+            _missionName = _launchesData[missionNumber].Name;
+            var missionDetails = _launchesData[missionNumber].Details;
+            var vehiclesStatus = _launchesData[missionNumber].Upcoming;
+            var launchStatus = _launchesData[missionNumber].Success;
 
-            if (string.IsNullOrWhiteSpace(missionPatchImage))
+            if (string.IsNullOrWhiteSpace(missionPatchImageLink))
             {
                 missionPatchImageLabel.Image = (Image) _resources.GetObject("$this.spacexLogo");
             }
             else
             {
-                missionPatchImageLabel.Image = Task.Run(() => HttpUtil.StreamUrlToImageAndResize(missionPatchImage, 256, 256)).Result;
+                missionPatchImageLabel.Image = Task.Run(() => HttpUtil.StreamUrlToImageAndResize(missionPatchImageLink, 256, 256)).Result;
             }
 
             missionNameLabel.Text = string.IsNullOrWhiteSpace(_missionName) ? "— No mission name —" : _missionName;
-
-            missionDetailsLabel.Text =
-                string.IsNullOrWhiteSpace(missionDetails) ? "— No mission details —" : missionDetails;
-
-            vehicleStatusLabel.Text = vehiclesStatus == true
-                ? $"{_missionsData[missionNumber].Rocket.RocketName} will be launched from {_missionsData[missionNumber].LaunchSite.SiteName}"
-                : $"{_missionsData[missionNumber].Rocket.RocketName} launched from {_missionsData[missionNumber].LaunchSite.SiteName}";
+            missionDetailsLabel.Text = string.IsNullOrWhiteSpace(missionDetails) ? "— No mission details —" : missionDetails;
+            
+            _rocketInfo = new RestClient($"{ApiUrl}/rockets/{_launchesData[missionNumber].RocketId}").Get<RocketInfo>(new RestRequest("/")).Data;
+            _launchpadInfo = JObject.Parse(new RestClient($"{ApiUrl}/launchpads/{_launchesData[missionNumber].LaunchpadId}")
+                .Get(new RestRequest("/")).Content).ToObject<LaunchpadInfo>();
+            vehicleStatusLabel.Text = vehiclesStatus == true ? $"{_rocketInfo.Name} will be launched from {_launchpadInfo.Name}" : $"{_rocketInfo.Name} launched from {_launchpadInfo.Name}";
 
             switch (launchStatus)
             {
@@ -80,14 +72,12 @@ namespace Launchpad.Forms
                     break;
                 default:
                     missionStatusLabel.ForeColor = Color.Blue;
-                    missionStatusLabel.Text = $"Will be launched in {_missionsData[missionNumber].LaunchDateLocal}";
+                    missionStatusLabel.Text = $"Will be launched in {_launchesData[missionNumber].DateLocal}";
                     break;
             }            
 
             EnableControls(true);
         }
-        
-        //
 
         private void previousMissionButton_Click(object sender, EventArgs e)
         {
@@ -103,13 +93,13 @@ namespace Launchpad.Forms
 
         private void currentMissionButton_Click(object sender, EventArgs e)
         {
-            _indexOfMission = _currentFlightNumber;
+            _indexOfMission = _nextFlightNumber;
             MissionData(_indexOfMission);
         }
 
         private void nextMissionButton_Click(object sender, EventArgs e)
         {
-            if (_indexOfMission == (_missionsData.Count - 1))
+            if (_indexOfMission == (_launchesData.Count - 1))
             {
                 MessageBox.Show("Next mission has not been planned, yet ;)", $"—{Application.ProductName}—",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -126,27 +116,50 @@ namespace Launchpad.Forms
             if (!string.IsNullOrWhiteSpace(_missionPatchLink))
             {
                 missionPatchImageLabel.Enabled = false;
-                new MissionPatch(_missionName, _missionPatchLink, 512, 512).ShowDialog();
+                Enabled = false;
+                var missionPathForm = new MissionPatchForm(_missionName, _missionPatchLink, 512, 512)
+                {
+                    StartPosition = FormStartPosition.CenterParent
+                };
+                missionPathForm.ShowDialog(this);
+                Enabled = true;
                 missionPatchImageLabel.Enabled = true;
+                missionPatchImageLabel.Select();
             }
             else
             {
-                MessageBox.Show("Mission patch is not available to enlarge!", $"—{Application.ProductName}—",
+                MessageBox.Show("Mission patch cannot be enlarged!", $"—{Application.ProductName}—",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void missionDetailsLabel_Click(object sender, EventArgs e)
         {
-            ShowMissionDetails(missionDetailsLabel.Text);
+            MessageBox.Show(missionDetailsLabel.Text, $"—{Application.ProductName}—", MessageBoxButtons.OK);
         }
 
         private void missionDataButton_Click(object sender, EventArgs e)
         {
             missionDataButton.Enabled = false;
-            new MissionData(_missionsData[_indexOfMission]).ShowDialog();
+            Enabled = false;
+            
+            if (_launchesData[_indexOfMission].PayloadsId.Count > 0)
+            {
+                var missionDataForm = new MissionDataForm(_launchesData[_indexOfMission], _rocketInfo, _launchpadInfo)
+                {
+                    StartPosition = FormStartPosition.CenterParent
+                };
+                missionDataForm.ShowDialog(this);
+                missionDataButton.Select();
+            }
+            else
+            {
+                MessageBox.Show("No mission data available.", $"—{Application.ProductName}—", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                currentMissionButton.Select();
+            }
+            
+            Enabled = true;
             missionDataButton.Enabled = true;
-            missionDataButton.Select();
         }
         
         private void aboutLaunchpadButton_Click(object sender, EventArgs e)
@@ -167,14 +180,13 @@ namespace Launchpad.Forms
                 TextAlign = ContentAlignment.TopCenter,
                 Text = $"{Application.ProductName} {Application.ProductVersion.Remove(3)}\r\n\r\n" +
                        "Made with love for all by skyffx\r\n" +
-                       "(Wojciech Piekielniak, wojciech.piekielniak@protonmail.com)\r\n\r\n" +
                        "github.com/skyffx/Launchpad\r\n\r\n" +
                        "This amazing app is based on:\r\n" +
                        "SpaceX-API — github.com/r-spacex/SpaceX-API\r\n" +
                        "Oddity — github.com/Tearth/Oddity\r\n" +
                        "App icon from flaticon.com\r\n\r\n" +
                        "SpaceX is the rightful owner of presented data.\r\n\r\n\r\n" +
-                       "—2020—"
+                       "—2021—"
             };
             
             var about = new Form
@@ -187,15 +199,16 @@ namespace Launchpad.Forms
                 ShowInTaskbar = false,
                 Text = $"—{Application.ProductName}—",
                 FormBorderStyle = FormBorderStyle.FixedDialog,
-                Size = new Size(400, 500),
+                Size = new Size(400, 465),
+                StartPosition = FormStartPosition.CenterParent
             };
             
-            about.ShowDialog();
+            Enabled = false;
+            about.ShowDialog(this);
+            Enabled = true;
         }
-
-        //
         
-        private void ShowTips()
+        private void AppTips()
         {
             var toolTip = new ToolTip {AutoPopDelay = 2000, InitialDelay = 100, ReshowDelay = 100, ShowAlways = true};
             toolTip.SetToolTip(previousMissionButton, "Go to previous mission");
@@ -205,19 +218,21 @@ namespace Launchpad.Forms
             toolTip.SetToolTip(missionDetailsLabel, "Click to show");
         }
         
-        public Main(List<LaunchInfo> launchInfo)
+        public MainForm(List<LaunchInfo> launchesData, LaunchInfo nextLaunch)
         {
             InitializeComponent();
             CenterToScreen();
-            ShowTips();
-
-            _currentFlightNumber = GetCurrentMissionFlightNumber();
-            _missionsData = launchInfo;
-            _indexOfMission = _missionsData.FindIndex(mission
+            AppTips();
+            
+            _nextFlightNumber = int.Parse(nextLaunch.FlightNumber.ToString());
+            _launchesData = launchesData;
+            
+            _indexOfMission = _launchesData.FindIndex(mission
                 => mission.FlightNumber != null && mission.FlightNumber.Value.ToString()
-                    .Contains(_currentFlightNumber.ToString()));
-            _currentFlightNumber = _indexOfMission;
-            MissionData(_indexOfMission);
+                    .Contains(_nextFlightNumber.ToString()));
+            _nextFlightNumber = _indexOfMission;
+            
+            MissionData(_nextFlightNumber);
         }
     }
 }

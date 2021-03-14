@@ -4,16 +4,14 @@ using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Launchpad.Util;
+using Launchpad.Utils;
 
 namespace Launchpad.Forms
 {
-    public partial class MissionPatch : Form
+    public partial class MissionPatchForm : Form
     {
         private readonly Image _image;
         private readonly string _missionName;
-        
-        //
         
         private void missionPatchImageLabel_Click(object sender, EventArgs e)
         {
@@ -35,20 +33,18 @@ namespace Launchpad.Forms
             }
         }
         
-        //
-        
-        private void ShowTips()
+        private void AppTips()
         {
             var toolTip = new ToolTip {AutoPopDelay = 2000, InitialDelay = 100, ReshowDelay = 100, ShowAlways = true};
             toolTip.SetToolTip(missionPatchImageLabel, "Click to close");
             toolTip.SetToolTip(saveMissionPatchImageButton, "Save it");
         }
         
-        public MissionPatch(string missionName, string missionPatchLink, int imageWidth, int imageHeight)
+        public MissionPatchForm(string missionName, string missionPatchLink, int imageWidth, int imageHeight)
         {
             InitializeComponent();
-            ShowTips();
-            CenterToScreen();
+            AppTips();
+            
             Controls.SetChildIndex(saveMissionPatchImageButton, 0);
             _image = Task.Run(() =>
                 HttpUtil.StreamUrlToImage(missionPatchLink)).Result;

@@ -6,10 +6,10 @@ using System.Windows.Forms;
 
 namespace Launchpad.Forms
 {
-    partial class Main
+    partial class MainForm
     {
 	    private readonly ComponentResourceManager _resources =
-		    new ComponentResourceManager(typeof(Main));
+		    new ComponentResourceManager(typeof(MainForm));
 	    
         // Required designer variable.
         private IContainer components = null;
@@ -45,8 +45,8 @@ namespace Launchpad.Forms
 	        // currentMissionButton
 	        //
 	        this.currentMissionButton.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-	        this.currentMissionButton.Location = new Point(75, 12);
-	        this.currentMissionButton.Size = new Size(200, 22);
+	        this.currentMissionButton.Location = new Point(85, 12);
+	        this.currentMissionButton.Size = new Size(180, 22);
 	        this.currentMissionButton.TabIndex = 1;
 	        this.currentMissionButton.Text = "CURRENT MISSION";
 	        this.currentMissionButton.TextAlign = ContentAlignment.TopCenter;
@@ -57,7 +57,7 @@ namespace Launchpad.Forms
 	        // previousMissionButton
 	        //
 	        this.previousMissionButton.Location = new Point(37, 12);
-	        this.previousMissionButton.Size = new Size(40, 22);
+	        this.previousMissionButton.Size = new Size(50, 22);
 	        this.previousMissionButton.TabIndex = 0;
 	        this.previousMissionButton.Image = (Image) _resources.GetObject("$this.leftArrow");
 	        this.previousMissionButton.ImageAlign = ContentAlignment.MiddleCenter;
@@ -67,8 +67,8 @@ namespace Launchpad.Forms
 	        //
 	        // nextMissionButton
 	        //
-	        this.nextMissionButton.Location = new Point(273, 12);
-	        this.nextMissionButton.Size = new Size(40, 22);
+	        this.nextMissionButton.Location = new Point(263, 12);
+	        this.nextMissionButton.Size = new Size(50, 22);
 	        this.nextMissionButton.TabIndex = 2;
 	        this.nextMissionButton.Image = (Image) _resources.GetObject("$this.rightArrow");
 	        this.nextMissionButton.ImageAlign = ContentAlignment.MiddleCenter;
@@ -159,7 +159,7 @@ namespace Launchpad.Forms
 	        this.aboutLaunchpadButton.UseVisualStyleBackColor = true;
 	        this.aboutLaunchpadButton.Click += new EventHandler(this.aboutLaunchpadButton_Click);
 	        //
-	        // Main
+	        // MainForm
 	        //
 	        this.components = new Container();
 	        this.AutoScaleMode = AutoScaleMode.Font;
@@ -181,7 +181,6 @@ namespace Launchpad.Forms
 	        this.Text = Application.ProductName;
 	        this.ResumeLayout(false);
 	        this.FormBorderStyle = FormBorderStyle.FixedDialog;
-	        //
 	        this.currentMissionButton.Select();
         }
 

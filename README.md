@@ -16,12 +16,13 @@
 
 #### Current status
 
-* stable (25-Dec-20)
+* stable (14-Mar-21)
 
 #### Used modules
 
 * [SpaceX REST API](https://github.com/r-spacex/SpaceX-API)
 * [Oddity](https://github.com/Tearth/Oddity)
+* [RestSharp](https://github.com/restsharp/RestSharp)
 
 #### Note
 

@@ -5,10 +5,10 @@ using System.Windows.Forms;
 
 namespace Launchpad.Forms
 {
-    partial class MissionData
+    partial class MissionDataForm
     {
         private readonly ComponentResourceManager _resources =
-            new ComponentResourceManager(typeof(Main));
+            new ComponentResourceManager(typeof(MainForm));
         
         // Required designer variable.
         private IContainer components = null;
@@ -243,7 +243,7 @@ namespace Launchpad.Forms
             this.abbreviationsButton.TextAlign = ContentAlignment.TopCenter;
             this.abbreviationsButton.Click += new EventHandler(this.abbreviationsButton_Click);
             //
-            // MissionData
+            // MissionDataForm
             //
             this.components = new Container();
             this.AutoScaleMode = AutoScaleMode.Font;

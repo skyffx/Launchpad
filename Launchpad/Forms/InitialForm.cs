@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Launchpad.Util;
+using Launchpad.Utils;
 using Oddity;
 
 namespace Launchpad.Forms
 {
-    public partial class Initial : Form
+    public partial class InitialForm : Form
     {
         private static async Task GetAllMissions()
         {
@@ -17,21 +17,22 @@ namespace Launchpad.Forms
             {
                 try
                 {
-                    var missionsData = new OddityCore().Launches.GetAll().Execute();
-                    var appFormThread = new Thread(() => new Main(missionsData).ShowDialog());
-                    appFormThread.SetApartmentState(ApartmentState.STA);
-                    appFormThread.Start();
+                    var oddityCore = new OddityCore();
+                    var launchesData = oddityCore.LaunchesEndpoint.GetAll().Execute();
+                    var nextLaunch = oddityCore.LaunchesEndpoint.GetLatest().Execute();
+                    var mainFormThread = new Thread(() => new MainForm(launchesData, nextLaunch).ShowDialog());
+                    mainFormThread.SetApartmentState(ApartmentState.STA);
+                    mainFormThread.Start();
                     Application.Exit();
                 }
-                catch (Exception exception)
+                catch
                 {
-                    MessageBox.Show(exception.Message, $"—{Application.ProductName}—", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred while retrieving data from server!\r\n" +
+                                    "Please to run app again.", $"—{Application.ProductName}—", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Application.Exit();
                 }
             });
         }
-        
-        //
         
         protected override CreateParams CreateParams
         {
@@ -79,7 +80,7 @@ namespace Launchpad.Forms
                 }
                 API.DeleteDC(memDc);
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
@@ -89,10 +90,8 @@ namespace Launchpad.Forms
         {
             UpdateFormDisplay(BackgroundImage);
         }
-
-        //
         
-        public Initial()
+        public InitialForm()
         {
             InitializeComponent();
             HttpUtil.InitHttpClient();
