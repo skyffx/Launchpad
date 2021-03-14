@@ -19,7 +19,7 @@ namespace Launchpad.Forms
                 {
                     var oddityCore = new OddityCore();
                     var launchesData = oddityCore.LaunchesEndpoint.GetAll().Execute();
-                    var nextLaunch = oddityCore.LaunchesEndpoint.GetLatest().Execute();
+                    var nextLaunch = oddityCore.LaunchesEndpoint.GetNext().Execute();
                     var mainFormThread = new Thread(() => new MainForm(launchesData, nextLaunch).ShowDialog());
                     mainFormThread.SetApartmentState(ApartmentState.STA);
                     mainFormThread.Start();
