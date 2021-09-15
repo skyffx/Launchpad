@@ -35,7 +35,7 @@ Launchpad app has been successfully accepted by SpaceX REST API dev team and add
 
 ## Downlaod
 
-* [App](https://github.com/skyffx/Launchpad/releases)
+* [App](https://github.com/skyffx/Launchpad/releases/download/v2.0/Launchpad-2.0.zip)
 
 ## License
 
